@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "Gizmo" do
-
   before(:all) do
     module MyModule
       include Gizmo::PageMixin
@@ -11,10 +10,9 @@ describe "Gizmo" do
   end
 
   describe "PageMixin" do
-
     describe "#define_action" do
       it "should be a private method" do
-        MyModule.private_methods.should include 'define_action'
+        MyModule.private_methods.should include :define_action
       end
 
       it "should define a new action" do
@@ -25,9 +23,6 @@ describe "Gizmo" do
       it "should call a defined action and return the expected response" do
         @obj.perform(:tell, "hello world").should == "hello world"
       end
-
     end
-
   end
-
 end

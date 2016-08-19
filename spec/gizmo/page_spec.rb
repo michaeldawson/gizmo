@@ -1,9 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "Gizmo" do
-
   describe "Page" do
-
     before do
       def response
         mock_response = <<-eos
@@ -18,14 +16,13 @@ describe "Gizmo" do
             </body>
           </html>
         eos
-        @response ||= mock('response', :body => mock_response)
+        @response ||= double('response', body: mock_response)
       end
 
       @page = Gizmo::Page.new(self, response.body, 'http://www.example.com')
     end
 
     describe "attributes and accessors" do
-
       it "should have an instance variable @document" do
         @page.instance_variable_get(:@document).should_not be_nil
       end
@@ -39,7 +36,6 @@ describe "Gizmo" do
           @page.instance_variable_get(:@document).should be_a Nokogiri::HTML::Document
         end
       end
-
 
       describe "@url" do
         it "should return the expected string" do
@@ -64,9 +60,8 @@ describe "Gizmo" do
       end
 
       it "should have a private attribute reader for browser" do
-        @page.private_methods.should include "browser"
+        @page.private_methods.should include :browser
       end
-
     end
 
     it "should have a #perform method" do
@@ -86,12 +81,12 @@ describe "Gizmo" do
 
     describe "#has_selector?" do
       it "should return true if @document contains one or more elements matching the selector" do
-        @page.has_selector?('p.one_of_these').should be_true
-        @page.has_selector?('p.two_of_these').should be_true
+        @page.has_selector?('p.one_of_these').should be true
+        @page.has_selector?('p.two_of_these').should be true
       end
 
       it "should return false if @document does not contain one or more elements matching the selector" do
-        @page.has_selector?('p.does_not_exist').should be_false
+        @page.has_selector?('p.does_not_exist').should be false
       end
     end
 
@@ -105,7 +100,5 @@ describe "Gizmo" do
         @page.send(:element_struct).should be_an OpenStruct
       end
     end
-
   end
-
 end

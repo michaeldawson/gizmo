@@ -1,9 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "Gizmo" do
-
   describe "Helpers" do
-
     before do
       def response
         mock_response = <<-eos
@@ -18,7 +16,7 @@ describe "Gizmo" do
             </body>
           </html>
         eos
-        @response ||= mock('response', :body => mock_response)
+        @body ||= mock_response
       end
 
       def current_url
@@ -27,11 +25,11 @@ describe "Gizmo" do
     end
 
     it "should provide a method :on_page" do
-      respond_to?(:on_page).should be_true
+      respond_to?(:on_page).should be true
     end
 
     it "should provide a method :on_page_with" do
-      respond_to?(:on_page_with).should be_true
+      respond_to?(:on_page_with).should be true
     end
 
     describe "#on_page" do
@@ -48,7 +46,7 @@ describe "Gizmo" do
       end
 
       it "should raise an error if the response object is nil" do
-        response.stub!(:nil?).and_return(true)
+        allow(response).to receive(:nil?).and_return(true)
         lambda { on_page { |page| page } }.should raise_error(Gizmo::NilResponseError, "Doh! response object is nil. This generally means your scenario has not yet visited a page!")
       end
 
@@ -94,7 +92,6 @@ describe "Gizmo" do
           page.should respond_to :my_method
         end
       end
-
     end
   end
 end
