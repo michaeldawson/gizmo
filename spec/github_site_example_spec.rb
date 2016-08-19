@@ -1,50 +1,32 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-
-require 'capybara'
-require 'capybara/dsl'
-require File.expand_path(File.dirname(__FILE__) + '/../features/support/patches/capybara')
-
-Capybara.default_driver = :selenium
-Capybara.run_server = false
-Spec::Runner.configure do |config|
-  config.include Capybara
-end
-
+require 'spec_helper'
+require 'byebug'
 
 describe "Github" do
-
-  before do
-    Gizmo.configure do |config|
-      config.mixin_dir = File.join(File.dirname(__FILE__), '../features/support/pages/')
-    end
-  end
-
   describe "Home Page Search" do
-
     before(:all) { visit 'http://github.com' }
 
     it "should have a text input which accepts a search query" do
       on_page_with :github_search do |page|
+        page.perform :enter_search_query, 'gizmo'
+      end
+    end
+
+    it "submitting the form should show search results with this repo included" do
+      on_page_with :github_search do |page|
         page.perform :search, 'gizmo'
       end
-    end
 
-    it "should perform a search when clicking the magnifying glass" do
-      on_page_with :github_search do |page|
-        click page.search_form.submit.attr('alt').value
-      end
-    end
-
-    it "should redirect to the search results page with gizmo as the first result" do
       on_page_with :github_search_results do |page|
-        page.search_results.repositories.results.first.name.should == 'gizmo'
+        repository = page.search_results.repositories.results.detect do |repo|
+          repo.name == 'gizmo' && repo.author == 'icaruswings'
+        end
+
+        expect(repository).not_to be_nil
       end
     end
-
   end
 
   describe "Repo Details" do
-
     before(:all) { visit 'http://github.com/icaruswings/gizmo' }
 
     it "should have the expected repository name" do
@@ -58,7 +40,5 @@ describe "Github" do
         page.repo_details.author == 'icaruswings'
       end
     end
-
   end
-
 end

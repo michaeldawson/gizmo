@@ -1,33 +1,25 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'rubygems'
+require 'bundler/setup'
+
+require 'rspec'
 require 'gizmo'
+require 'capybara'
+require 'capybara/dsl'
 
-require 'spec'
-require 'spec/autorun'
+Capybara.register_driver :selenium_chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
 
-begin require 'redgreen' unless ENV['TM_CURRENT_LINE']; rescue LoadError; end
+Capybara.default_driver = :selenium_chrome
+Capybara.run_server = false
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
+  config.include Capybara::DSL
   config.include Gizmo::Helpers
 
-  config.before do
-    Gizmo.configure do |config|
-      config.mixin_dir = File.dirname(__FILE__) + '/pages'
+  config.before(:suite) do
+    Gizmo.configure do |gizmo|
+      gizmo.mixin_dir = File.join(File.dirname(__FILE__), '../features/support/pages/')
     end
   end
-
-end
-
-module PageWithMyElementStruct
-  def my_element_struct; element_struct; end
-end
-
-module PageWithMyMixin
-  def my_method; nil; end
-end
-
-module PageWithMyOtherMixin
-end
-
-module PageWithMyInvalidMixin
-  def valid?; false; end
 end

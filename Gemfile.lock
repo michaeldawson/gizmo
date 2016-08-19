@@ -3,7 +3,6 @@ PATH
   specs:
     gizmo (0.1.0)
       activesupport
-      colored
       nokogiri
       tilt
 
@@ -27,7 +26,6 @@ GEM
       xpath (~> 2.0)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
-    colored (1.2)
     concurrent-ruby (1.0.2)
     cucumber (2.4.0)
       builder (>= 2.1.2)
