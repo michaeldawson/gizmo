@@ -5,6 +5,8 @@ Gizmo
 
 This code was created by [icaruswings](https://github.com/icaruswings) and other contributors from [realestate.com.au](http://www.realestate.com.au).
 
+Code has been updated to work with later versions of RSpec. Cucumber tests exist in the project that haven't been updated, and are failing.
+
 Install
 ------------
 
