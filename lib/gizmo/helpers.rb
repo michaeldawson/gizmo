@@ -1,11 +1,13 @@
+require "active_support/inflector.rb"
+
 module Gizmo
 
   module Helpers
 
     def on_page &block
-      resp = response
-      raise NilResponseError, "Doh! response object is nil. This generally means your scenario has not yet visited a page!" if resp.nil?
-      yield Page.new(self, resp.body, current_url)
+      raise NilResponseError, "Doh! response object is nil. This generally means your scenario has not yet visited a page!" if body.nil?
+      raise ArgumentError, 'You must supply a block to the #on_page helper' unless block_given?
+      yield Page.new(self, body, current_url) if block_given?
     end
 
     def on_page_with *module_names
