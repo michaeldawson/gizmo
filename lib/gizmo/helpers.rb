@@ -1,9 +1,7 @@
 require "active_support/inflector.rb"
 
 module Gizmo
-
   module Helpers
-
     def on_page &block
       raise NilResponseError, "Doh! response object is nil. This generally means your scenario has not yet visited a page!" if body.nil?
       raise ArgumentError, 'You must supply a block to the #on_page helper' unless block_given?
@@ -53,7 +51,5 @@ EOS
       page.extend(load_mixin!(mixin_name))
       raise MixinNotValidError, "Page did not have #{mixin_name} at #{page.url}" unless page.valid?
     end
-
   end
-
 end
