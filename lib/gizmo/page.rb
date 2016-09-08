@@ -29,10 +29,10 @@ module Gizmo
       send(method_name, *params)
     end
 
-    def method_missing name, *args
+    def method_missing name, *args, &block
       method_name = name.to_sym
       return super unless browser.respond_to?(method_name)
-      browser.send(method_name, *args)
+      browser.send(method_name, *args, &block)
     end
 
     private
