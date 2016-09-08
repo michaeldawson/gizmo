@@ -90,7 +90,6 @@ describe "Gizmo" do
       end
     end
 
-
     describe "#element_struct" do
       it "should provide an override for OpenStruct to make it yield to a block" do
         @page.send(:element_struct) { |o| o.should be_an OpenStruct }

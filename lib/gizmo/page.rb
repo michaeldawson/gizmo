@@ -2,7 +2,7 @@ require 'ostruct'
 
 module Gizmo
   class Page
-    attr_reader :url, :document, :browser
+    attr_reader :url, :document
 
     def initialize driver, content, url
       @browser = driver
@@ -36,6 +36,8 @@ module Gizmo
     end
 
     private
+
+    attr_reader :browser
 
     def define_action action_name, &block
       self.class.send(:define_method, "#{action_name.to_s}_action".to_sym, &block)
