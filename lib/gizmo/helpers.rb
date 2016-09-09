@@ -6,6 +6,7 @@ module Gizmo
       raise NilResponseError, "Doh! response object is nil. This generally means your scenario has not yet visited a page!" if body.nil?
       raise ArgumentError, 'You must supply a block to the #on_page helper' unless block_given?
       yield Page.new(self, body, current_url) if block_given?
+      true
     end
 
     def on_page_with *module_names
@@ -23,11 +24,13 @@ module Gizmo
 
     def load_mixin! mixin_name
       begin
-        mixin_dir = Gizmo.configuration.mixin_dir
         const_name = "PageWith#{mixin_name.to_s.camelize}"
-        mixin = Dir["#{mixin_dir}/**/page_with_#{mixin_name}.rb"].first
-        require (mixin || "#{mixin_dir}/page_with_#{mixin_name}.rb") unless Object.const_defined?(const_name)
-        Object.const_get(const_name)
+        return Object.const_get(const_name) || begin
+          mixin_dir = Gizmo.configuration.mixin_dir
+          mixin = Dir["#{mixin_dir}/**/page_with_#{mixin_name}.rb"].first
+          require (mixin || "#{mixin_dir}/page_with_#{mixin_name}.rb") unless Object.const_defined?(const_name)
+          Object.const_get(const_name)
+        end
       rescue LoadError
         raise MixinNotFoundError, error_body = <<EOS
 
