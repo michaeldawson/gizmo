@@ -20,7 +20,7 @@ module Gizmo
     attr_accessor :mixin_dir
 
     def initialize
-      self.mixin_dir = Pathname.new(Dir.pwd).join("features/support/pages")
+      self.mixin_dir = Pathname.new(Dir.pwd).join('spec/support/pages')
     end
   end
 end
